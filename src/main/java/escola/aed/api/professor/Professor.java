@@ -36,4 +36,13 @@ public class Professor{
         this.endereco = new Endereco(dados.endereco());
 
     }
+
+    public void atualizarInfProfessor(DadosAtualiProfessor dados) {
+        if(dados.nome() != null){
+            this.nome = dados.nome();
+        }
+        if(dados.telefone() != null){
+            this.telefone = dados.telefone();
+        }
+    }
 }
