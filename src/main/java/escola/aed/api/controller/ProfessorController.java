@@ -15,6 +15,7 @@ import java.util.List;
 public class ProfessorController {
     @Autowired //injeção de dependências(um ponto aonde a injeção automática deve ser aplicada)
     private ProfessorRepository repository;
+
     @PostMapping //mapea requisição POST da classe Controler
     @Transactional
     public void casdastrar(@RequestBody @Valid DadosCadProfessor dados){
@@ -30,17 +31,31 @@ public class ProfessorController {
     @GetMapping //mapea requisição GET da classe
     public Page<NomesProfessor> pesquisarProfessor(@PageableDefault(size=5, sort = {"nome"}) Pageable paginacao){ //Pageable auxilia na hora de consultar
                                                                         // páginas e agrupar quantidade de registros nas páginas.
-        return repository.findAll(paginacao).map(NomesProfessor::new);
+        return repository.findAllByStatusTrue(paginacao).map(NomesProfessor::new); //findAllByStatusTrue - lista apenas os professores de STATUS True
     }
 
 
     @PutMapping
     @Transactional
-    public void atualizarMedico(@RequestBody @Valid DadosAtualiProfessor dados){
+    public void atualizarProfessor(@RequestBody @Valid DadosAtualiProfessor dados){
         Professor professor = repository.getReferenceById(dados.id());
-
         professor.atualizarInfProfessor(dados);
-
     }
+
+
+   /* @DeleteMapping("/{id}")
+    @Transactional
+    public void excluirProfessor(@PathVariable Long id){
+        repository.deleteById(id);
+    }*/
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void excluirProfessor(@PathVariable Long id){
+        var professor = repository.getReferenceById(id);
+        professor.excluirProfessor();
+    }
+
+
 
 }

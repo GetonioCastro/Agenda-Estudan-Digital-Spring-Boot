@@ -27,6 +27,8 @@ public class Professor{
     @Embedded
     private Endereco endereco;
 
+    private Boolean status;
+
     public Professor(DadosCadProfessor dados) {
         this.nome = dados.nome();
         this.email = dados.email();
@@ -34,6 +36,7 @@ public class Professor{
         this.cpf = dados.cpf();
         this.formacao = dados.formacao();
         this.endereco = new Endereco(dados.endereco());
+        this.status = true;
 
     }
 
@@ -44,5 +47,9 @@ public class Professor{
         if(dados.telefone() != null){
             this.telefone = dados.telefone();
         }
+    }
+
+    public void excluirProfessor() {
+        this.status = false;
     }
 }
