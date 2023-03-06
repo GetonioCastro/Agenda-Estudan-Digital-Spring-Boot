@@ -11,14 +11,12 @@ public record DadosCadProfessor(
         @NotBlank //não nulo e não vazio (anotação do jakarta.validation.constraints.) Validações
         String nome,
         @NotBlank
-        @Email
         String email,
         String telefone,
-        @CPF
         String cpf,
         @NotNull
         Formacao formacao,
         @NotNull
-        @Valid
+        @Valid //para que as validações sejam reconhecidas e validadas
         DadosEndereco endereco) {
 }

@@ -1,22 +1,46 @@
 package escola.aed.api.controller;
 
-import escola.aed.api.professor.DadosCadProfessor;
-import escola.aed.api.professor.Professor;
-import escola.aed.api.professor.ProfessorRepository;
+import escola.aed.api.professor.*;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
-@RequestMapping("professores")
+@RequestMapping("/professores")//mapea requisição POST da classe Controler
 public class ProfessorController {
-    @Autowired
+    @Autowired //injeção de dependências(um ponto aonde a injeção automática deve ser aplicada)
     private ProfessorRepository repository;
-    @PostMapping
+    @PostMapping //mapea requisição POST da classe Controler
+    @Transactional
     public void casdastrar(@RequestBody @Valid DadosCadProfessor dados){
         repository.save(new Professor(dados));
     }
+
+    /*
+    @GetMapping //mapea requisição GET da classe
+    public List<NomesProfessor> pesquisarProfessor(){
+        return repository.findAll().stream().map(NomesProfessor::new).toList(); //stream().map => convertendo
+                                                                                //toList() => converta para uma lista.
+    }*/
+    @GetMapping //mapea requisição GET da classe
+    public Page<NomesProfessor> pesquisarProfessor(@PageableDefault(size=5, sort = {"nome"}) Pageable paginacao){ //Pageable auxilia na hora de consultar
+                                                                        // páginas e agrupar quantidade de registros nas páginas.
+        return repository.findAll(paginacao).map(NomesProfessor::new);
+    }
+
+
+    @PutMapping
+    @Transactional
+    public void atualizarMedico(@RequestBody @Valid DadosAtualiProfessor dados){
+        Professor professor = repository.getReferenceById(dados.id());
+
+        professor.atualizarInfProfessor(dados);
+
+    }
+
 }
