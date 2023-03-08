@@ -1,15 +1,12 @@
 package escola.aed.api.controller;
 
-import escola.aed.api.aluno.Aluno;
-import escola.aed.api.aluno.AlunoRepository;
+import escola.aed.api.aluno.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import escola.aed.api.aluno.DadosCadAluno;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -23,4 +20,25 @@ public class AlunoController {
     public void cadastrarAluno(@RequestBody @Valid DadosCadAluno dados){
         alunoRepository.save(new Aluno(dados));
     }
+
+    @GetMapping
+    public List<ListaAlunos> ListarAlunos(){
+        return alunoRepository.findAll().stream().map(ListaAlunos::new).toList();
+    }
+
+    @PutMapping
+    @Transactional
+    public void AtualizarAluno(@RequestBody @Valid DadosAtualizarAluno dados){
+        Aluno aluno = alunoRepository.getReferenceById(dados.id());
+        aluno.atualizarInfAluno(dados);
+
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void deleteAluno(@PathVariable Long id){
+        alunoRepository.deleteById(id);
+    }
+
+
 }

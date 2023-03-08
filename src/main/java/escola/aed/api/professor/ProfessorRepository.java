@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface ProfessorRepository extends JpaRepository<Professor, Long> {
 
-   Page<Professor> findAllByStatusTrue(Pageable paginacao); //findAllByStatusTrue - lista apenas os professores de STATUS True
+   Page<Professor> findAllByStatusTrue(Pageable paginacao);
 }

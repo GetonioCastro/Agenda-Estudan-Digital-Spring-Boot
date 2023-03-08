@@ -11,27 +11,25 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/professores")//mapea requisição POST da classe Controler
+@RequestMapping("/professores")
 public class ProfessorController {
-    @Autowired //injeção de dependências(um ponto aonde a injeção automática deve ser aplicada)
+    @Autowired
     private ProfessorRepository repository;
 
-    @PostMapping //mapea requisição POST da classe Controler
+    @PostMapping
     @Transactional
     public void casdastrar(@RequestBody @Valid DadosCadProfessor dados){
         repository.save(new Professor(dados));
     }
 
     /*
-    @GetMapping //mapea requisição GET da classe
+    @GetMapping
     public List<NomesProfessor> pesquisarProfessor(){
-        return repository.findAll().stream().map(NomesProfessor::new).toList(); //stream().map => convertendo
-                                                                                //toList() => converta para uma lista.
+        return repository.findAll().stream().map(NomesProfessor::new).toList();
     }*/
     @GetMapping //mapea requisição GET da classe
-    public Page<NomesProfessor> pesquisarProfessor(@PageableDefault(size=5, sort = {"nome"}) Pageable paginacao){ //Pageable auxilia na hora de consultar
-                                                                        // páginas e agrupar quantidade de registros nas páginas.
-        return repository.findAllByStatusTrue(paginacao).map(NomesProfessor::new); //findAllByStatusTrue - lista apenas os professores de STATUS True
+    public Page<NomesProfessor> pesquisarProfessor(@PageableDefault(size=5, sort = {"nome"}) Pageable paginacao){
+        return repository.findAllByStatusTrue(paginacao).map(NomesProfessor::new);
     }
 
 
@@ -41,7 +39,6 @@ public class ProfessorController {
         Professor professor = repository.getReferenceById(dados.id());
         professor.atualizarInfProfessor(dados);
     }
-
 
    /* @DeleteMapping("/{id}")
     @Transactional
@@ -55,7 +52,5 @@ public class ProfessorController {
         var professor = repository.getReferenceById(id);
         professor.excluirProfessor();
     }
-
-
 
 }

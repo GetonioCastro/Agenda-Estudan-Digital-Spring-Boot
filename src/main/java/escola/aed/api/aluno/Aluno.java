@@ -35,4 +35,13 @@ public class Aluno{
         this.endereco = new Endereco(dadosAluno.endereco());
     }
 
+    public void atualizarInfAluno(DadosAtualizarAluno dados) {
+        if(dados.nome() != null){
+            this.nome = dados.nome();
+        }
+        if(dados.matricula() != null){
+            this.matricula = dados.matricula();
+        }
+
+    }
 }
