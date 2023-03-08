@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.br.CPF;
 
 public record DadosCadProfessor(
-        @NotBlank //não nulo e não vazio (anotação do jakarta.validation.constraints.) Validações
+        @NotBlank
         String nome,
         @NotBlank
         String email,
@@ -17,6 +17,6 @@ public record DadosCadProfessor(
         @NotNull
         Formacao formacao,
         @NotNull
-        @Valid //para que as validações sejam reconhecidas e validadas
+        @Valid
         DadosEndereco endereco) {
 }
